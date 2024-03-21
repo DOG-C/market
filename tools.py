@@ -17,7 +17,6 @@ def save_cookies(login_cookies):
         pickle.dump(login_cookies, fw)
 
 def load_cookies():
-    """ 读取保存的cookies """
     try:
         with open('cookies.pkl', 'rb') as fr:
             cookies = pickle.load(fr)
@@ -60,5 +59,7 @@ def check_login_status(login_cookies):
 
 def account_login(login_type: str, login_id=None, login_password=None):
     home_title = 'ちいかわマーケット-公式グッズショップ'
+
+    login_url = 'https://chiikawamarket.jp/account/login'
 
     
