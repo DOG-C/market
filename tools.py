@@ -27,14 +27,7 @@ def load_cookies():
         print(e)
 
 def check_login_status(login_cookies):
-    login_title = 'アカウント | ちいかわマーケット'
-
-    headers = {
-
-    }
-
-def account_login(login_type: str, login_id=None, login_password=None):
-    account_title = 'ちいかわマーケット-公式グッズショップ'
+    account_title = 'アカウント | ちいかわマーケット'
 
     headers = {
         'authority': 'chiikawamarket.jp',
@@ -64,3 +57,8 @@ def account_login(login_type: str, login_id=None, login_password=None):
         return True
     else:
         return False
+
+def account_login(login_type: str, login_id=None, login_password=None):
+    home_title = 'ちいかわマーケット-公式グッズショップ'
+
+    
