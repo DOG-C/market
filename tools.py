@@ -58,8 +58,37 @@ def check_login_status(login_cookies):
         return False
 
 def account_login(login_type: str, login_id=None, login_password=None):
-    home_title = 'ちいかわマーケット-公式グッズショップ'
+    loggedin_title = 'アカウント | ちいかわマーケット'
 
     login_url = 'https://chiikawamarket.jp/account/login'
 
+    option = webdriver.ChromeOptions()
+
+    option.add_experimental_option('excludeSwitches', ['enable-automation'])
+    option.add_argument('--disable-blink-features=AutomationControlled')
+
+    if platform.system().lower() == 'linux':
+        chromedriver = os.path.join(os.getcwd(), 'chromedriver_linux')
+    elif platform.system().lower() == 'windows':
+        chromedriver = os.path.join(os.getcwd(), 'chromedriver_windows')
+    else:
+        chromedriver = os.path.join(os.getcwd(), 'chromedriver_mac')
+
+    driver = webdriver.Chrome(chromedriver, options=option)
+    driver.set_page_load_timeout(60)
+    driver.get(login_url)
+    if login_type == 'account':
+        driver.switch_to.frame('alibaba-login-box')  # 切换内置frame，否则会找不到元素位置
+        driver.find_element_by_id('customer_email').send_keys(login_id)
+        driver.find_element_by_id('customer_password').send_keys(login_password)
+        driver.find_element_by_class_name('account--sign-in').send_keys(Keys.ENTER)
+    WebDriverWait(driver, 180, 0.5).until(EC.title_contains(loggedin_title))
+
+    login_cookies = {}
+    if driver.title != loggedin_title:
+        print('登录异常，请检查页面登录提示信息')
+    for cookie in driver.get_cookies():
+        login_cookies[cookie['name']] = cookie['value']
+    if check_login_status(login_cookies):
+        return login_cookies
     
