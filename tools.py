@@ -29,5 +29,26 @@ def load_cookies():
 def check_login_status(login_cookies):
     login_title = 'アカウント | ちいかわマーケット'
 
+    headers = {
+
+    }
+
 def account_login(login_type: str, login_id=None, login_password=None):
     title = 'ちいかわマーケット-公式グッズショップ'
+
+    headers = {
+        'authority': 'chiikawamarket.jp',
+        'cache-control': 'max-age=0',
+        'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"macOS"',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-user': '?1',
+        'sec-fetch-dest': 'document',
+        'referer': 'https://passport.damai.cn/login?ru=https://passport.damai.cn/accountinfo/myinfo',
+        'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7',
+    }
