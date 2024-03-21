@@ -8,9 +8,12 @@ import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 def save_cookies(login_cookies):
     with open('cookies.pkl', 'wb') as fw:
@@ -57,6 +60,17 @@ def check_login_status(login_cookies):
     else:
         return False
 
+def check_shadow_dom_content():
+    try:
+        # 使用 WebDriverWait 等待页面加载完成
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "zigzag-worldshopping-checkout"))
+        )
+        return True
+    except TimeoutException:
+        return False
+
+
 def account_login(login_type: str, login_id=None, login_password=None):
     loggedin_title = 'アカウント | ちいかわマーケット'
 
@@ -67,21 +81,25 @@ def account_login(login_type: str, login_id=None, login_password=None):
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
     option.add_argument('--disable-blink-features=AutomationControlled')
 
-    if platform.system().lower() == 'linux':
-        chromedriver = os.path.join(os.getcwd(), 'chromedriver_linux')
-    elif platform.system().lower() == 'windows':
-        chromedriver = os.path.join(os.getcwd(), 'chromedriver_windows')
-    else:
-        chromedriver = os.path.join(os.getcwd(), 'chromedriver_mac')
-
-    driver = webdriver.Chrome(chromedriver, options=option)
-    driver.set_page_load_timeout(60)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
+   # driver.set_page_load_timeout(60)
+    
     driver.get(login_url)
+    
     if login_type == 'account':
-        driver.switch_to.frame('alibaba-login-box')  # 切换内置frame，否则会找不到元素位置
-        driver.find_element_by_id('customer_email').send_keys(login_id)
-        driver.find_element_by_id('customer_password').send_keys(login_password)
-        driver.find_element_by_class_name('account--sign-in').send_keys(Keys.ENTER)
+        if check_shadow_dom_content():
+            # 使用 JavaScript 来访问 Shadow DOM 并点击 "接受所有 Cookie" 按钮
+            accept_cookies_js = """
+                const hostElement = document.getElementById('zigzag-worldshopping-checkout');
+                const shadowRoot = hostElement.shadowRoot;
+                const acceptButton = shadowRoot.querySelector('#zigzag-test__cookie-banner-accept-all');
+                acceptButton.click();
+            """
+            driver.execute_script(accept_cookies_js)
+        
+        driver.find_element(By.ID, 'customer_email').send_keys(login_id)
+        driver.find_element(By.ID, 'customer_password').send_keys(login_password)
+        driver.find_element(By.CLASS_NAME, 'account--sign-in').click()
     WebDriverWait(driver, 180, 0.5).until(EC.title_contains(loggedin_title))
 
     login_cookies = {}
