@@ -34,7 +34,7 @@ def check_login_status(login_cookies):
     }
 
 def account_login(login_type: str, login_id=None, login_password=None):
-    title = 'ちいかわマーケット-公式グッズショップ'
+    account_title = 'ちいかわマーケット-公式グッズショップ'
 
     headers = {
         'authority': 'chiikawamarket.jp',
@@ -52,3 +52,15 @@ def account_login(login_type: str, login_id=None, login_password=None):
         'referer': 'https://passport.damai.cn/login?ru=https://passport.damai.cn/accountinfo/myinfo',
         'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7',
     }
+
+    response = requests.get(
+        "https://chiikawamarket.jp/account",
+        headers=headers,
+        cookies=load_cookies
+    )
+
+    account_info =BeautifulSoup(response.text, "html.parser")
+    if account_info.title.text == account_title:
+        return True
+    else:
+        return False
