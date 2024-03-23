@@ -10,20 +10,37 @@ class ChiikawaMarket:
     def __init__(self):
         self.login_cookies = {}
         self.session = session()
-        self.login_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット']
+        self.login_site_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット', 'https://chiikawamarket.jp/account']
+        self.account_site_info = ['https://chiikawamarket.jp/account', 'アカウント | ちいかわマーケット']
         self.login_id: str = 'caoyuqi1996@gmail.com'
         self.login_password: str = 'woshi6B19960613'
+        self.headers = {
+        'authority': 'chiikawamarket.jp',
+        'cache-control': 'max-age=0',
+        'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"macOS"',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-user': '?1',
+        'sec-fetch-dest': 'document',
+        'referer': 'chiikawamarket.jp',
+        'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7',
+        }
         
     def run(self):
         if os.path.exists('cookies.pkl'):
             cookies = tools.load_cookies()
             self.login_cookies.update(cookies)
         elif 'account' == args.mode.lower():
-            self.login_cookies = tools.account_login('account', self.login_info, self.login_id, self.login_password)
+            self.login_cookies = tools.account_login('account', self.headers, self.login_site_info, self.account_site_info, self.login_id, self.login_password)
         else:
             self.login_cookies = tools.account_login('qr')
 
-        login_status = tools.check_login_status(self.login_cookies)
+        login_status = tools.check_login_status(self.login_cookies, self.headers, self.account_site_info)
 
         if not login_status:
             print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies，则删除cookies文件重新尝试', '-' * 10)

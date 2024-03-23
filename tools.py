@@ -28,28 +28,12 @@ def load_cookies():
         print('-' * 10, '加载cookies失败', '-' * 10)
         print(e)
 
-def check_login_status(login_cookies):
-    account_title = 'アカウント | ちいかわマーケット'
-
-    headers = {
-        'authority': 'chiikawamarket.jp',
-        'cache-control': 'max-age=0',
-        'sec-ch-ua': '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-user': '?1',
-        'sec-fetch-dest': 'document',
-        'referer': 'https://passport.damai.cn/login?ru=https://passport.damai.cn/accountinfo/myinfo',
-        'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7',
-    }
+def check_login_status(login_cookies, headers, account_site_info):
+    account_url = account_site_info[0]
+    account_title = account_site_info[1]
 
     response = requests.get(
-        "https://chiikawamarket.jp/account",
+        account_url,
         headers=headers,
         cookies=login_cookies
     )
@@ -84,9 +68,9 @@ def handle_with_shadow_dom(driver, host, element, operator, input=None):
         shadow_element = find_shadow_dom_element(driver, host, element)
         driver.execute_script("arguments[0].click();", shadow_element)
 
-def account_login(login_type: str, login_info: list, login_id=None, login_password=None):
-    login_url = login_info[0]
-    loggedin_title = login_info[1]
+def account_login(login_type: str, headers: dict, login_site_info: list, account_site_info: list, login_id=None, login_password=None):
+    login_url = login_site_info[0]
+    loggedin_title = login_site_info[1]
 
     option = webdriver.ChromeOptions()
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
@@ -114,6 +98,6 @@ def account_login(login_type: str, login_info: list, login_id=None, login_passwo
         print('登录异常，请检查页面登录提示信息')
     for cookie in driver.get_cookies():
         login_cookies[cookie['name']] = cookie['value']
-    if check_login_status(login_cookies):
+    if check_login_status(login_cookies, headers, account_site_info):
         return login_cookies
     
