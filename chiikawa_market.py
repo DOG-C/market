@@ -10,7 +10,7 @@ class ChiikawaMarket:
     def __init__(self):
         self.login_cookies = {}
         self.session = session()
-        self.login_site_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット', 'https://chiikawamarket.jp/account']
+        self.login_site_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット']
         self.account_site_info = ['https://chiikawamarket.jp/account', 'アカウント | ちいかわマーケット']
         self.login_id: str = 'caoyuqi1996@gmail.com'
         self.login_password: str = 'woshi6B19960613'
