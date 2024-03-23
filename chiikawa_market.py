@@ -14,11 +14,6 @@ class ChiikawaMarket:
         self.login_id: str = 'caoyuqi1996@gmail.com'
         self.login_password: str = 'woshi6B19960613'
         
-       # self.item_id: int = 610820299671  # 商品id
-       # self.viewer: list = ['viewer1']  # 在大麦网已填写的观影人
-       # self.buy_nums: int = 1  # 购买影票数量, 需与观影人数量一致
-       # self.ticket_price: int = 180  # 购买指定票价
-        
     def run(self):
         if os.path.exists('cookies.pkl'):
             cookies = tools.load_cookies()
@@ -35,8 +30,6 @@ class ChiikawaMarket:
             return
         elif login_status and not os.path.exists('cookies.pkl'):
             tools.save_cookies(self.login_cookies)
-
-        #commodity_param, ex_params = tools.get_api_param()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='manual to this script')
