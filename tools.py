@@ -60,16 +60,29 @@ def check_login_status(login_cookies):
     else:
         return False
 
-def check_shadow_dom_content():
+def check_shadow_dom_id(driver, element):
     try:
         # 使用 WebDriverWait 等待页面加载完成
         WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.ID, "zigzag-worldshopping-checkout"))
+            EC.presence_of_element_located((By.ID, element))
         )
         return True
     except TimeoutException:
         return False
+    
+def find_shadow_dom_element(driver, host, element):
+    shadow_element = driver.execute_script("""
+                const hostElement = document.getElementById(arguments[0]);
+                const shadowRoot = hostElement.shadowRoot;
+                const shadowElement = shadowRoot.querySelector(arguments[1]);
+                return shadowElement;
+        """, host, element)
+    return shadow_element
 
+def handle_with_shadow_dom(driver, host, element, operator, input=None):
+    if operator == 'click':
+        shadow_element = find_shadow_dom_element(driver, host, element)
+        driver.execute_script("arguments[0].click();", shadow_element)
 
 def account_login(login_type: str, login_id=None, login_password=None):
     loggedin_title = 'アカウント | ちいかわマーケット'
@@ -85,17 +98,11 @@ def account_login(login_type: str, login_id=None, login_password=None):
    # driver.set_page_load_timeout(60)
     
     driver.get(login_url)
-    
+
     if login_type == 'account':
-        if check_shadow_dom_content():
+        if check_shadow_dom_id(driver ,"zigzag-worldshopping-checkout"):
             # 使用 JavaScript 来访问 Shadow DOM 并点击 "接受所有 Cookie" 按钮
-            accept_cookies_js = """
-                const hostElement = document.getElementById('zigzag-worldshopping-checkout');
-                const shadowRoot = hostElement.shadowRoot;
-                const acceptButton = shadowRoot.querySelector('#zigzag-test__cookie-banner-accept-all');
-                acceptButton.click();
-            """
-            driver.execute_script(accept_cookies_js)
+            handle_with_shadow_dom(driver, 'zigzag-worldshopping-checkout', '#zigzag-test__cookie-banner-accept-all', 'click')
         
         driver.find_element(By.ID, 'customer_email').send_keys(login_id)
         driver.find_element(By.ID, 'customer_password').send_keys(login_password)
