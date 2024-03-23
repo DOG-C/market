@@ -10,10 +10,15 @@ class ChiikawaMarket:
     def __init__(self):
         self.login_cookies = {}
         self.session = session()
+        # 登陆页面url和登陆页面的title
         self.login_site_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット']
+        # 成功登陆后的账号页面和账号页面title
         self.account_site_info = ['https://chiikawamarket.jp/account', 'アカウント | ちいかわマーケット']
+        # 登陆的账号
         self.login_id: str = 'caoyuqi1996@gmail.com'
+        # 登陆的密码
         self.login_password: str = 'woshi6B19960613'
+        # 登陆相关的headers内容
         self.headers = {
         'authority': 'chiikawamarket.jp',
         'cache-control': 'max-age=0',
@@ -32,6 +37,7 @@ class ChiikawaMarket:
         }
         
     def run(self):
+        # 处理登陆信息，如果已有cookies就直接登陆，否则使用登陆信息进行第一次登陆
         if os.path.exists('cookies.pkl'):
             cookies = tools.load_cookies()
             self.login_cookies.update(cookies)
@@ -47,6 +53,8 @@ class ChiikawaMarket:
             return
         elif login_status and not os.path.exists('cookies.pkl'):
             tools.save_cookies(self.login_cookies)
+
+        # 正式处理商品部分
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='manual to this script')

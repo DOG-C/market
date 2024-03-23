@@ -100,4 +100,3 @@ def account_login(login_type: str, headers: dict, login_site_info: list, account
         login_cookies[cookie['name']] = cookie['value']
     if check_login_status(login_cookies, headers, account_site_info):
         return login_cookies
-    
