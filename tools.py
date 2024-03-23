@@ -113,9 +113,7 @@ def account_login(login_type: str, login_info: list, login_id=None, login_passwo
     if driver.title != loggedin_title:
         print('登录异常，请检查页面登录提示信息')
     for cookie in driver.get_cookies():
-        print('处理cookies')
         login_cookies[cookie['name']] = cookie['value']
-        print(login_cookies)
     if check_login_status(login_cookies):
         return login_cookies
     
