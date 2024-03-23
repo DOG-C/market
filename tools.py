@@ -60,7 +60,7 @@ def check_login_status(login_cookies):
     else:
         return False
 
-def check_shadow_dom_id(driver, element):
+def check_id_of_element(driver, element):
     try:
         # 使用 WebDriverWait 等待页面加载完成
         WebDriverWait(driver, 5).until(
@@ -84,13 +84,11 @@ def handle_with_shadow_dom(driver, host, element, operator, input=None):
         shadow_element = find_shadow_dom_element(driver, host, element)
         driver.execute_script("arguments[0].click();", shadow_element)
 
-def account_login(login_type: str, login_id=None, login_password=None):
-    loggedin_title = 'アカウント | ちいかわマーケット'
-
-    login_url = 'https://chiikawamarket.jp/account/login'
+def account_login(login_type: str, login_info: list, login_id=None, login_password=None):
+    login_url = login_info[0]
+    loggedin_title = login_info[1]
 
     option = webdriver.ChromeOptions()
-
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
     option.add_argument('--disable-blink-features=AutomationControlled')
 
@@ -100,13 +98,14 @@ def account_login(login_type: str, login_id=None, login_password=None):
     driver.get(login_url)
 
     if login_type == 'account':
-        if check_shadow_dom_id(driver ,"zigzag-worldshopping-checkout"):
+        if check_id_of_element(driver ,"zigzag-worldshopping-checkout"):
             # 使用 JavaScript 来访问 Shadow DOM 并点击 "接受所有 Cookie" 按钮
             handle_with_shadow_dom(driver, 'zigzag-worldshopping-checkout', '#zigzag-test__cookie-banner-accept-all', 'click')
         
-        driver.find_element(By.ID, 'customer_email').send_keys(login_id)
-        driver.find_element(By.ID, 'customer_password').send_keys(login_password)
-        driver.find_element(By.CLASS_NAME, 'account--sign-in').click()
+        if check_id_of_element(driver, 'customer_email'):
+            driver.find_element(By.ID, 'customer_email').send_keys(login_id)
+            driver.find_element(By.ID, 'customer_password').send_keys(login_password)
+            driver.find_element(By.CLASS_NAME, 'account--sign-in').click()
     WebDriverWait(driver, 180, 0.5).until(EC.title_contains(loggedin_title))
 
     login_cookies = {}

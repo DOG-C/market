@@ -10,6 +10,7 @@ class ChiikawaMarket:
     def __init__(self):
         self.login_cookies = {}
         self.session = session()
+        self.login_info = ['https://chiikawamarket.jp/account/login', 'アカウント | ちいかわマーケット']
         self.login_id: str = 'caoyuqi1996@gmail.com'
         self.login_password: str = 'woshi6B19960613'
         
@@ -23,7 +24,7 @@ class ChiikawaMarket:
             cookies = tools.load_cookies()
             self.login_cookies.update(cookies)
         elif 'account' == args.mode.lower():
-            self.login_cookies = tools.account_login('account', self.login_id, self.login_password)
+            self.login_cookies = tools.account_login('account', self.login_info, self.login_id, self.login_password)
         else:
             self.login_cookies = tools.account_login('qr')
 
