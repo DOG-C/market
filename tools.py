@@ -51,7 +51,7 @@ def check_login_status(login_cookies):
     response = requests.get(
         "https://chiikawamarket.jp/account",
         headers=headers,
-        cookies=load_cookies
+        cookies=login_cookies
     )
 
     account_info =BeautifulSoup(response.text, "html.parser")
@@ -98,9 +98,10 @@ def account_login(login_type: str, login_info: list, login_id=None, login_passwo
     driver.get(login_url)
 
     if login_type == 'account':
-        if check_id_of_element(driver ,"zigzag-worldshopping-checkout"):
-            # 使用 JavaScript 来访问 Shadow DOM 并点击 "接受所有 Cookie" 按钮
-            handle_with_shadow_dom(driver, 'zigzag-worldshopping-checkout', '#zigzag-test__cookie-banner-accept-all', 'click')
+        # # 海外版本才需要的部分，关闭World Shopping窗口未实现
+        # if check_id_of_element(driver ,"zigzag-worldshopping-checkout"):
+        #     # 使用 JavaScript 来访问 Shadow DOM 并点击 "接受所有 Cookie" 按钮
+        #     handle_with_shadow_dom(driver, 'zigzag-worldshopping-checkout', '#zigzag-test__cookie-banner-accept-all', 'click')
         
         if check_id_of_element(driver, 'customer_email'):
             driver.find_element(By.ID, 'customer_email').send_keys(login_id)
@@ -112,7 +113,9 @@ def account_login(login_type: str, login_info: list, login_id=None, login_passwo
     if driver.title != loggedin_title:
         print('登录异常，请检查页面登录提示信息')
     for cookie in driver.get_cookies():
+        print('处理cookies')
         login_cookies[cookie['name']] = cookie['value']
+        print(login_cookies)
     if check_login_status(login_cookies):
         return login_cookies
     
