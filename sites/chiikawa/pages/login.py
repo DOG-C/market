@@ -112,7 +112,7 @@ class Login:
 
         login_status = self.check_login_status()
         if not login_status:
-            print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies，则删除cookies文件重新尝试', '-' * 10)
+            print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies, 则删除cookies文件重新尝试', '-' * 10)
             return
         elif login_status and not os.path.exists('cookies_chiikawa.pkl'):
             self.save_cookies()
