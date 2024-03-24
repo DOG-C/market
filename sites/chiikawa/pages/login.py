@@ -42,19 +42,19 @@ class Login:
 
     def check_cookies(self):
         # 如果已有cookies就直接登陆，否则使用登陆信息进行第一次登陆
-        if os.path.exists('cookies.pkl'):
+        if os.path.exists('cookies_chiikawa.pkl'):
             cookies = self.load_cookies()
             self.login_cookies.update(cookies)
             return True
         return False
 
     def save_cookies(self):
-        with open('cookies.pkl', 'wb') as fw:
+        with open('cookies_chiikawa.pkl', 'wb') as fw:
             pickle.dump(self.login_cookies, fw)
 
     def load_cookies(self):
         try:
-            with open('cookies.pkl', 'rb') as fr:
+            with open('cookies_chiikawa.pkl', 'rb') as fr:
                 cookies = pickle.load(fr)
             return cookies
         except Exception as e:
@@ -114,5 +114,5 @@ class Login:
         if not login_status:
             print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies，则删除cookies文件重新尝试', '-' * 10)
             return
-        elif login_status and not os.path.exists('cookies.pkl'):
+        elif login_status and not os.path.exists('cookies_chiikawa.pkl'):
             self.save_cookies()
