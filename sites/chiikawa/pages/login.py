@@ -4,13 +4,9 @@ import requests
 from utilities.explicit_wait import check_id_of_element
 from requests import session
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 
 class Login:
     def __init__(self, driver):
