@@ -1,7 +1,7 @@
 import os
 import pickle
 import requests
-from utilities.explicit_wait import check_id_of_element
+from utilities.explicit_wait import check_presence_of_element
 from requests import session
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -108,7 +108,7 @@ class Login:
     def login(self, username, password):
         if not self.check_cookies():
             self.open()
-            if check_id_of_element(self.driver, self.username_locator):
+            if check_presence_of_element(self.driver, self.username_locator):
                 self.enter_username(username)
                 self.enter_password(password)
                 self.click_login_button()
