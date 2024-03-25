@@ -20,5 +20,4 @@ class Chiikawa():
         else:
             print("跳转失败")
         
-        found_links = new_items.find_links_with_keyword(self.keyword)
-        print(found_links)
+        product = new_items.go_to_product(self.keyword)

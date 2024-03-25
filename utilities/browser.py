@@ -7,7 +7,7 @@ def get_chrome_driver():
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
     option.add_experimental_option("detach", True)
     option.add_argument('--disable-blink-features=AutomationControlled')
-    option.page_load_strategy = 'eager'
+    option.page_load_strategy = 'none'
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
     return driver

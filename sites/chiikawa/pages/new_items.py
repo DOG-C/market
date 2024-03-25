@@ -1,6 +1,8 @@
 import time
+import random
 from selenium.webdriver.common.by import By
 from utilities.explicit_wait import check_presence_of_element
+from .product import Product
 
 class NewItems():
     def __init__(self, driver):
@@ -54,3 +56,9 @@ class NewItems():
         
         return found_hrefs
             
+    def go_to_product(self, keyword):
+        found_links = self.find_links_with_keyword(keyword)
+        selected_link = random.choice(found_links)
+        self.driver.get(selected_link)
+        
+        return Product(self.driver)
