@@ -1,6 +1,7 @@
 from utilities import browser
 
 from sites.chiikawa.pages.login import Login
+from sites.chiikawa.pages.cart import Cart
 
 class Chiikawa():
     def __init__(self, username, password, keyword=None):
@@ -24,5 +25,12 @@ class Chiikawa():
 
         if product.add_to_cart():
             print('成功加入购物车')
+            cart = Cart(driver)            
+
+            if cart.is_at_cart():
+                cart.check_out()
+                print('结账啦')
+            else:
+                print('没有自动进入购物车')
         else:
-            print('gg')
+            print('加入购物车失败')

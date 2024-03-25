@@ -1,4 +1,3 @@
-import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -15,9 +14,10 @@ class Product():
     def add_to_cart(self):
         try:
             # 等待位于agree_box div中的checkbox出现
-            checkbox = WebDriverWait(self.driver, 1).until(
+            checkbox = WebDriverWait(self.driver, 5).until(
                 EC.presence_of_element_located(self.checkbox_locator)
             )
+
             # 等待加入购物车按钮
             add_to_cart_button = self.driver.find_element(*self.add_to_cart_locator)
 
@@ -28,7 +28,6 @@ class Product():
 
                 # 如果按钮不是disabled，点击它
                 if add_to_cart_button.get_attribute("disabled") is None:
-                    print(add_to_cart_button.get_attribute("disabled"))
                     add_to_cart_button.click()
                     return True
                 else:
