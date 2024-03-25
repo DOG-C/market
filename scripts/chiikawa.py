@@ -3,9 +3,10 @@ from utilities import browser
 from sites.chiikawa.pages.login import Login
 
 class Chiikawa():
-    def __init__(self, username, password):
+    def __init__(self, username, password, keyword=None):
         self.username = username
         self.password = password
+        self.keyword = keyword
 
     def run(self):
         driver = browser.get_chrome_driver()
@@ -18,3 +19,5 @@ class Chiikawa():
             print("成功跳转到新着商品")
         else:
             print("跳转失败")
+        
+        
