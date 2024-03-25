@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.common.by import By
 from utilities.explicit_wait import check_presence_of_element
 
@@ -20,6 +21,7 @@ class NewItems():
         found_hrefs = []
         
         while True:
+            start_time = time.time()
             check_presence_of_element(self.driver, self.parent_locator)
 
             parent = self.driver.find_elements(*self.parent_locator)
@@ -39,8 +41,14 @@ class NewItems():
             
             # 检查是否找到了符合条件的链接
             if found_hrefs:
-                break  # 如果找到了，退出循环
-            else:
+                # 记录查找所需时间
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                print(f"循环运行时间：{elapsed_time}秒")
+
+                # 如果找到了，退出循环
+                break
+            else:       
                 # 如果没有找到，刷新页面再次尝试
                 self.driver.refresh()
         
