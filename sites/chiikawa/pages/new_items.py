@@ -46,7 +46,7 @@ class NewItems():
                 # 记录查找所需时间
                 end_time = time.time()
                 elapsed_time = end_time - start_time
-                print(f"循环运行时间：{elapsed_time}秒")
+                print(f"搜索时间：{elapsed_time}秒")
 
                 # 如果找到了，退出循环
                 break
@@ -60,5 +60,5 @@ class NewItems():
         found_links = self.find_links_with_keyword(keyword)
         selected_link = random.choice(found_links)
         self.driver.get(selected_link)
-        
+
         return Product(self.driver)
