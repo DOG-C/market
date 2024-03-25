@@ -8,6 +8,7 @@ class NewItems():
 
         # 元素定位器
         self.product_locator = (By.CSS_SELECTOR, "div.product--root")
+        self.parent_locator = (By.CSS_SELECTOR, "div.collection--body--grid.collections_wrapper")
 
     def is_at_new_items(self):
         if self.driver.title == self.title:
@@ -19,10 +20,12 @@ class NewItems():
         found_hrefs = []
         
         while True:
-            check_presence_of_element(self.driver, self.product_locator)
+            check_presence_of_element(self.driver, self.parent_locator)
+
+            parent = self.driver.find_elements(*self.parent_locator)
             
             # 查找所有位于product_root div中的<a>标签
-            product_roots = self.driver.find_elements(*self.product_locator)
+            product_roots = parent[0].find_elements(*self.product_locator)
             
             for product_root in product_roots:
 

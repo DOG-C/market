@@ -6,6 +6,7 @@ def get_chrome_driver():
     option = webdriver.ChromeOptions()
     option.add_experimental_option('excludeSwitches', ['enable-automation'])
     option.add_argument('--disable-blink-features=AutomationControlled')
+    option.page_load_strategy = 'eager'
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
     return driver
