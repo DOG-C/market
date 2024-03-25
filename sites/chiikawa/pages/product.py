@@ -18,14 +18,14 @@ class Product():
             checkbox = WebDriverWait(self.driver, 1).until(
                 EC.presence_of_element_located(self.checkbox_locator)
             )
+            # 等待加入购物车按钮
+            add_to_cart_button = self.driver.find_element(*self.add_to_cart_locator)
 
             while True:
                 # 勾选注意事项
                 if not checkbox.is_selected():
                     checkbox.click()
 
-                # 等待加入购物车按钮
-                add_to_cart_button = self.driver.find_element(*self.add_to_cart_locator)
                 # 如果按钮不是disabled，点击它
                 if add_to_cart_button.get_attribute("disabled") is None:
                     print(add_to_cart_button.get_attribute("disabled"))
