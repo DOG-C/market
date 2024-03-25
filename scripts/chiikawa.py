@@ -21,3 +21,8 @@ class Chiikawa():
             print("跳转失败")
         
         product = new_items.go_to_product(self.keyword)
+
+        if product.add_to_cart():
+            print('成功加入购物车')
+        else:
+            print('gg')

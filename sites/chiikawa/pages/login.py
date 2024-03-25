@@ -102,7 +102,7 @@ class Login:
         return True
     
     def go_to_new_items(self):
-        self.driver.get("https://chiikawamarket.jp/collections/newitems")
+        self.driver.get("https://chiikawamarket.jp/collections/newitems?page=5")
         return NewItems(self.driver)
 
     def login(self, username, password):
