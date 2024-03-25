@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from .new_items import NewItems
 
 class Login:
     def __init__(self, driver):
@@ -99,6 +100,10 @@ class Login:
             print('登录异常，请检查页面登录提示信息')
             return False
         return True
+    
+    def go_to_new_items(self):
+        self.driver.get("https://chiikawamarket.jp/collections/newitems")
+        return NewItems(self.driver)
 
     def login(self, username, password):
         if not self.check_cookies():

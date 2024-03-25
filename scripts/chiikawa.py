@@ -12,3 +12,9 @@ class Chiikawa():
         login = Login(driver)
 
         login.login(self.username, self.password)
+        new_items = login.go_to_new_items()
+
+        if new_items.is_at_new_items():
+            print("成功跳转到新着商品")
+        else:
+            print("跳转失败")
