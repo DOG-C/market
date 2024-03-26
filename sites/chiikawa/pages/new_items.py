@@ -33,13 +33,15 @@ class NewItems():
             
             for product_root in product_roots:
 
-                links = product_root.find_elements(By.TAG_NAME, "a")
-
-                for link in links:
-                    aria_label = link.get_attribute("aria-label")
-                    if aria_label and keyword in aria_label:  # 确保aria-label不为空且包含关键词
-                        href = link.get_attribute("href")
-                        found_hrefs.append(href)
+                a = product_root.find_elements(By.TAG_NAME, "a")
+                aria_label = a[0].get_attribute("aria-label")
+                href = a[0].get_attribute("href")
+                if aria_label and keyword in aria_label:  # 确保aria-label不为空且包含关键词
+                    link_info = {
+                        "name": aria_label,
+                        "link": href
+                    }
+                    found_hrefs.append(link_info)
             
             # 检查是否找到了符合条件的链接
             if found_hrefs:
@@ -58,7 +60,12 @@ class NewItems():
             
     def go_to_product(self, keyword):
         found_links = self.find_links_with_keyword(keyword)
-        selected_link = random.choice(found_links)
+        print(found_links)
+
+        selected_product = random.choice(found_links)
+        selected_link = selected_product['link']
+        print(selected_product)
+
         self.driver.get(selected_link)
 
         return Product(self.driver)
