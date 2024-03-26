@@ -15,7 +15,7 @@ class Product():
         try:
             # 等待位于agree_box div中的checkbox出现
             checkbox = WebDriverWait(self.driver, 5).until(
-                EC.presence_of_element_located(self.checkbox_locator)
+                EC.element_to_be_clickable(self.checkbox_locator)
             )
 
             # 等待加入购物车按钮
