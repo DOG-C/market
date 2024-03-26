@@ -7,11 +7,15 @@ class Cart():
     def __init__(self, driver):
         self.driver = driver
         self.title = "ショッピングカート | ちいかわマーケット"
+        self.url = "https://chiikawamarket.jp/cart"
 
         # 元素定位器
         self.checkbox_locator = (By.CSS_SELECTOR, "input#termsCheck.termsCheck")
         self.checkout_locator = (By.NAME, "checkout")
-    
+
+    def go_to_cart(self):
+        self.driver.get(self.url)
+
     def is_at_cart(self):
         if self.driver.title == self.title:
             return True

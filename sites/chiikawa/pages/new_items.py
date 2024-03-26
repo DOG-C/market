@@ -20,7 +20,7 @@ class NewItems():
     
     def find_links_with_keyword(self, keyword):
         # 初始化一个列表来存储找到的符合条件的hrefs
-        found_hrefs = []
+        found_hrefs = set()
         
         while True:
             start_time = time.time()
@@ -37,14 +37,10 @@ class NewItems():
                 aria_label = a[0].get_attribute("aria-label")
                 href = a[0].get_attribute("href")
                 if aria_label and keyword in aria_label:  # 确保aria-label不为空且包含关键词
-                    link_info = {
-                        "name": aria_label,
-                        "link": href
-                    }
-                    found_hrefs.append(link_info)
+                    found_hrefs.add(href)
             
             # 检查是否找到了符合条件的链接
-            if found_hrefs:
+            if len(found_hrefs) > 2:
                 # 记录查找所需时间
                 end_time = time.time()
                 elapsed_time = end_time - start_time
@@ -62,10 +58,4 @@ class NewItems():
         found_links = self.find_links_with_keyword(keyword)
         print(found_links)
 
-        selected_product = random.choice(found_links)
-        selected_link = selected_product['link']
-        print(selected_product)
-
-        self.driver.get(selected_link)
-
-        return Product(self.driver)
+        return found_links

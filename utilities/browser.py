@@ -11,3 +11,13 @@ def get_chrome_driver():
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
     return driver
+
+def get_headless_chrome_driver():
+    option = webdriver.ChromeOptions()
+    option.add_experimental_option('excludeSwitches', ['enable-automation'])
+    option.add_argument('--disable-blink-features=AutomationControlled')
+    option.page_load_strategy = 'none'
+    option.add_argument("--headless")
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=option)
+    return driver
