@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import WebDriverException
 
 class Product():
     def __init__(self, driver):
@@ -15,10 +15,10 @@ class Product():
     def add_to_cart(self, cart):
         try:
             # 设定循环运行的最大时长（秒）
-            max_duration = 5
+            max_duration = 8
 
             # 等待位于agree_box div中的checkbox出现
-            checkbox = WebDriverWait(self.driver, 4).until(
+            checkbox = WebDriverWait(self.driver, 6).until(
                 EC.element_to_be_clickable(self.checkbox_locator)
             )
 
@@ -39,6 +39,6 @@ class Product():
                     # 如果按钮是disabled，取消勾选
                     checkbox.click()
 
-        except (NoSuchElementException, TimeoutException):
+        except WebDriverException:
             # 如果找不到元素或者出现超时，刷新页面重新尝试
             return False
