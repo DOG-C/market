@@ -6,10 +6,11 @@ from sites.chiikawa.pages.cart import Cart
 from sites.chiikawa.pages.product import Product
 
 class Chiikawa():
-    def __init__(self, username, password, keyword=None):
+    def __init__(self, username, password, header, keyword=None):
         self.username = username
         self.password = password
         self.keyword = keyword
+        self.header = header
 
     def open_link_in_new_tab(self, driver, link):
         """在新标签页中打开指定链接。"""
@@ -25,7 +26,7 @@ class Chiikawa():
 
     def run(self):
         driver = browser.get_chrome_driver()
-        login = Login(driver)
+        login = Login(driver, self.header)
 
         login.login(self.username, self.password)
         new_items = login.go_to_new_items()
