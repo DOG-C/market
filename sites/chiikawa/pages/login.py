@@ -41,11 +41,8 @@ class Login:
         self.password_locator = (By.ID, 'customer_password')
         self.login_button_locator = (By.CLASS_NAME, 'account--sign-in')
 
-    def check_cookies(self):
-        # 如果已有cookies就直接登陆，否则使用登陆信息进行第一次登陆
+    def check_cookies_pkl(self):
         if os.path.exists('cookies_chiikawa.pkl'):
-            cookies = self.load_cookies()
-            self.login_cookies.update(cookies)
             return True
         return False
 
@@ -53,16 +50,16 @@ class Login:
         with open('cookies_chiikawa.pkl', 'wb') as fw:
             pickle.dump(self.login_cookies, fw)
 
-    def load_cookies(self):
+    def load_cookies_from_pkl(self):
         try:
             with open('cookies_chiikawa.pkl', 'rb') as fr:
                 cookies = pickle.load(fr)
-            return cookies
+            self.login_cookies.update(cookies)
         except Exception as e:
             print('-' * 10, '加载cookies失败', '-' * 10)
             print(e)
 
-    def get_cookies(self):
+    def get_cookies_from_driver(self):
         for cookie in self.driver.get_cookies():
             self.login_cookies[cookie['name']] = cookie['value']
 
@@ -106,15 +103,22 @@ class Login:
         return NewItems(self.driver)
 
     def login(self, username, password):
-        if not self.check_cookies():
+        if not self.check_cookies_pkl():
             self.open()
             if check_presence_of_element(self.driver, self.username_locator):
                 self.enter_username(username)
                 self.enter_password(password)
                 self.click_login_button()
             if self.check_redirect():
-                self.get_cookies()
-
+                self.get_cookies_from_driver()
+        else:
+            self.open()
+            print('11111')
+            self.load_cookies_from_pkl()
+            for name, value in self.login_cookies.items():
+                cookie = {'name': name, 'value': value}
+                self.driver.add_cookie(cookie)
+        
         login_status = self.check_login_status()
         if not login_status:
             print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies, 则删除cookies文件重新尝试', '-' * 10)
