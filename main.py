@@ -3,9 +3,10 @@ import json
 from scripts import chiikawa
 
 if __name__ == '__main__':
-
+    path = os.path.dirname(os.path.realpath(sys.executable))
     # 导入抢购信息
-    with open('setup.json', 'r') as file:
+    setup_path = os.path.join(path, 'setup.json')
+    with open(setup_path, 'r') as file:
         info = json.load(file)
     username = info['username']
     password = info['password']
