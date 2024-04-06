@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, sys
 import json
 from scripts import chiikawa

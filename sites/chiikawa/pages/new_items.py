@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 import time
-import random
 from selenium.webdriver.common.by import By
 from utilities.explicit_wait import check_presence_of_element
 from .product import Product

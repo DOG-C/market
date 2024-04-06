@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def find_shadow_dom_element(driver, host, element):
         shadow_element = driver.execute_script("""
                     const hostElement = document.getElementById(arguments[0]);

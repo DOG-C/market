@@ -1,4 +1,4 @@
-import time
+# -*- coding: utf-8 -*-
 from utilities import browser
 from concurrent.futures import ThreadPoolExecutor
 from sites.chiikawa.pages.login import Login
