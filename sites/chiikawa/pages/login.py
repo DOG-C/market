@@ -10,7 +10,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from .new_items import NewItems
 
 class Login:
-    def __init__(self, driver, header):
+    def __init__(self, driver, header, path):
+        self.cookies_path = os.path.join(path, 'cookies_chiikawa.pkl')
         self.driver = driver
         self.login_cookies = {}
         self.session = session()
@@ -27,17 +28,17 @@ class Login:
         self.login_button_locator = (By.CLASS_NAME, 'account--sign-in')
 
     def check_cookies_pkl(self):
-        if os.path.exists('cookies_chiikawa.pkl'):
+        if os.path.exists(self.cookies_path):
             return True
         return False
 
     def save_cookies(self):
-        with open('cookies_chiikawa.pkl', 'wb') as fw:
+        with open(self.cookies_path, 'wb') as fw:
             pickle.dump(self.login_cookies, fw)
 
     def load_cookies_from_pkl(self):
         try:
-            with open('cookies_chiikawa.pkl', 'rb') as fr:
+            with open(self.cookies_path, 'rb') as fr:
                 cookies = pickle.load(fr)
             self.login_cookies.update(cookies)
         except Exception as e:
@@ -108,5 +109,5 @@ class Login:
         if not login_status:
             print('-' * 10, '登录失败, 请检查登录账号信息。若使用保存的cookies, 则删除cookies文件重新尝试', '-' * 10)
             return
-        elif login_status and not os.path.exists('cookies_chiikawa.pkl'):
+        elif login_status and not os.path.exists(self.cookies_path):
             self.save_cookies()
